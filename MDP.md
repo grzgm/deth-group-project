@@ -1,4 +1,4 @@
-For our MDP we have picked the domain Math our MDP defines the different skills that a mathematician can learn and we have defined modules which the agent can take te learn said skills.
+For our MDP we have picked the domain Math our MDP defines the different skills that a mathematician can learn and we have defined modules which the agent can take te learn said skills. test
 ## States
 
  $(s_1, s_2, \ldots, s_N)$ : Skill levels in various domains.
