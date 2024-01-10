@@ -6,7 +6,8 @@
 		{"id":"c2c54024521ffcd0","type":"text","text":"State  = (0,0,0,0,0,0,0,0,0)\n$x = 1$\n$\\alpha = 2$\n$\\beta = 1$","x":-180,"y":-20,"width":260,"height":120,"color":"4"},
 		{"id":"6284696ff7570dc9","type":"text","text":"**Differential Equations**\n$Q = (3, 3, 3, 3, 0, 3, 1, 3, 3)$\n$m = (0, 1, 1, 0, 0, 0, 0, 0, 5)$\n\n$$P(s, s', a_i) = \\frac{1}{1+ \\exp(-\\gamma Q_i \\cdot s)} = 0.11  $$","x":-400,"y":-760,"width":300,"height":200,"color":"6"},
 		{"id":"06a124cd89c78fff","type":"text","text":"State = (6,4,4,0,0,0,0,0,10)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-620,"y":-960,"width":290,"height":100,"color":"4"},
-		{"id":"9813eaa83181773b","type":"text","text":"State = (6,3,3,0,0,0,0,0,5)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-220,"y":-960,"width":290,"height":100,"color":"1"}
+		{"id":"9813eaa83181773b","type":"text","text":"State = (6,3,3,0,0,0,0,0,5)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-220,"y":-960,"width":290,"height":100,"color":"1"},
+		{"id":"6b7c68e4b2eee270","x":-1160,"y":-800,"width":460,"height":480,"type":"file","file":"MDP.md"}
 	],
 	"edges":[
 		{"id":"38ee3cb534fc3881","fromNode":"c2c54024521ffcd0","fromSide":"top","toNode":"a2aa4eb21c8b9989","toSide":"bottom"},
