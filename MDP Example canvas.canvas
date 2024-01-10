@@ -1,0 +1,19 @@
+{
+	"nodes":[
+		{"id":"a2aa4eb21c8b9989","type":"text","text":"**Basic Arithmetic**\n$Q = (0, 0, 0, 0, 0, 0, 0, 0, 0,)$\n$m = (3, 1, 1, 0, 0, 0, 0, 0, 0,)$\n\n$$P(s, s', a_i) = \\frac{1}{1+ \\exp(0)} = 0.5 $$","x":-375,"y":-240,"width":255,"height":160,"color":"6"},
+		{"id":"1fd9c938c6607ef6","type":"text","text":"State = (3,1,1,0,0,0,0,0,0)\n$$ s' = s + \\beta \\cdot m_i \\odot x $$","x":-180,"y":-460,"width":280,"height":100,"color":"1"},
+		{"id":"9a2f40965108fe53","type":"text","text":"State = (6,2,2,0,0,0,0,0,0)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-640,"y":-460,"width":290,"height":100,"color":"4"},
+		{"id":"c2c54024521ffcd0","type":"text","text":"State  = (0,0,0,0,0,0,0,0,0)\n$x = 1$\n$\\alpha = 2$\n$\\beta = 1$","x":-180,"y":-20,"width":260,"height":120,"color":"4"},
+		{"id":"6284696ff7570dc9","type":"text","text":"**Differential Equations**\n$Q = (3, 3, 3, 3, 0, 3, 1, 3, 3)$\n$m = (0, 1, 1, 0, 0, 0, 0, 0, 5)$\n\n$$P(s, s', a_i) = \\frac{1}{1+ \\exp(-\\gamma Q_i \\cdot s)} = 0.11  $$","x":-400,"y":-760,"width":300,"height":200,"color":"6"},
+		{"id":"06a124cd89c78fff","type":"text","text":"State = (6,4,4,0,0,0,0,0,10)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-620,"y":-960,"width":290,"height":100,"color":"4"},
+		{"id":"9813eaa83181773b","type":"text","text":"State = (6,3,3,0,0,0,0,0,5)\n$$ s' = s + \\alpha \\cdot m_i \\odot x $$","x":-220,"y":-960,"width":290,"height":100,"color":"1"}
+	],
+	"edges":[
+		{"id":"38ee3cb534fc3881","fromNode":"c2c54024521ffcd0","fromSide":"top","toNode":"a2aa4eb21c8b9989","toSide":"bottom"},
+		{"id":"f0e05668eca98b3d","fromNode":"a2aa4eb21c8b9989","fromSide":"top","toNode":"1fd9c938c6607ef6","toSide":"bottom","label":"0.5"},
+		{"id":"231d953ab9996c27","fromNode":"a2aa4eb21c8b9989","fromSide":"top","toNode":"9a2f40965108fe53","toSide":"bottom","label":"0.5"},
+		{"id":"bb1caee952e5c3ef","fromNode":"9a2f40965108fe53","fromSide":"top","toNode":"6284696ff7570dc9","toSide":"bottom"},
+		{"id":"95950f0529eb9025","fromNode":"6284696ff7570dc9","fromSide":"top","toNode":"06a124cd89c78fff","toSide":"bottom","label":"0.11"},
+		{"id":"9529d53774f0c4ff","fromNode":"6284696ff7570dc9","fromSide":"top","toNode":"9813eaa83181773b","toSide":"bottom","label":"0.89"}
+	]
+}
