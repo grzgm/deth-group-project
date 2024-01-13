@@ -1,81 +1,9 @@
-import random
-from math import isclose
 import numpy as np
-
-
-class MDP:
-    def __init__(self, states, actions, transition_probabilities, rewards, gamma=0.9,
-                 eps=1e6, random_termination=0.0, cost_of_living=0.0):
-        self.states = states
-        self.actions = actions
-        self.transition_probabilities = transition_probabilities
-        self.inspect_probabilities()
-        self.rewards = rewards
-
-        self.gamma = gamma
-        self.eps = eps
-        self.random_termination = random_termination
-        assert 0 <= self.random_termination <= 1
-        self.cost_of_living = cost_of_living
-
-        self.value = {}
-        for state in states:
-            self.value[state] = 0.0
-
-    # def reset(self):
-    #     for state in self.states:
-    #         self.value[state] = 0.0
-
-    def lookup_transition_probability(self, state, action, next_state):
-        return self.transition_probabilities.get(state, {}).get(action, {}).get(next_state, 0.0)
-
-    def possible_actions(self, state):
-        return [index[0] for index, probability in np.ndenumerate(self.transition_probabilities[state]) if
-                probability != 0]
-
-    def lookup_reward(self, state, action, next_state):
-        return self.rewards[state, action, next_state]
-
-    def inspect_probabilities(self):
-        for state_index in range(len(states)):
-            for action_index in range(len(actions)):
-                probabilities_sum = sum(self.transition_probabilities[state_index, action_index, :])
-                if probabilities_sum == 0:
-                    continue
-                else:
-                    assert isclose(sum(self.transition_probabilities[state_index, action_index, :]), 1, abs_tol=1e-4)
-
-    def step(self, current_state, action):
-        probabilities = self.transition_probabilities[current_state, action]
-        new_state = np.random.choice(len(probabilities), p=probabilities)
-        reward = self.lookup_reward(current_state, action, new_state)
-        is_terminal = len(self.possible_actions(new_state)) == 0
-        return (new_state, reward, is_terminal)
-
-    # def value(self, state):
-    #     pass
-
-    # def action_value(self, state, action):
-    #     next_states = self.transition_probabilities[state].get(action, {})
-    #     return sum(self.lookup_transition_probability(state, action, next_state) * (
-    #             self.lookup_reward(state, action, next_state) + self.gamma * self.value[next_state]) for next_state
-    #                in next_states)
-
-    # def state_value(self, state, action):
-    #     next_states = self.transition_probabilities[state].get(action, {})
-    #     return sum(self.lookup_transition_probability(state, action, next_state) * (
-    #             self.lookup_reward(state, action, next_state) + self.gamma * self.value[next_state]) for next_state
-    #                in next_states)
-
-    # return random.choice(self.actions)
-
-    def estimate_value(self):
-        for _ in range(int(self.eps)):
-            for state in self.states:
-                self.value[state] = self.action_value(state, self.policy(state))
+from mdp import Mdp
 
 
 # if __name__ == "__main__":
+# states, actions, transition probabilities, rewards, state action array (Q-Table) set up
 states = ['0', '1', '2', '3', '4', '5', '6']
 actions = ['d', 'u']
 
@@ -93,14 +21,12 @@ for state_index in range(len(states)):
 
 rewards = np.zeros((len(states), len(actions), len(states)))
 rewards[states.index('1'), actions.index('d'), states.index('0')] = 1
-rewards[states.index('5'), actions.index('u'), states.index('6')] = 0
-
-print(rewards[states.index('5'), actions.index('u'), states.index('6')])
-print(transition_probabilities[states.index('5'), actions.index('u'), states.index('6')])
+rewards[states.index('5'), actions.index('u'), states.index('6')] = -1
 
 state_value_array = []
 action_value_array = np.zeros((len(states), len(actions)))
 
+# Env variables
 episodes = 1000
 max_steps_in_episode = 1000
 start_state_index = 3
@@ -116,7 +42,7 @@ epsilon = 0.05
 # Discount Factor
 gamma = 0.9
 
-mdp = MDP(states, actions, transition_probabilities, rewards, random_termination=0.3, cost_of_living=-1.5)
+mdp = Mdp(states, actions, transition_probabilities, rewards, random_termination=0.3, cost_of_living=-1.5)
 
 for episode in range(episodes):
     print(episode)
@@ -166,7 +92,10 @@ for episode in range(episodes):
             action_value_array[state, action] += alpha_monte_carlo * (
                         episode_return - action_value_array[state, action])
 
-print('\tu\t\td')
+# Action Value Array (Q-Table) at the end
+for a in actions:
+    print(f'\t{a}\t', end='')
+print()
 for s in states:
     print(s, end=' ')
     with np.printoptions(precision=3, suppress=True):
