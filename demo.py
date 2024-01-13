@@ -16,12 +16,18 @@ mooc = {
 # states, actions, transition probabilities, rewards, state action array (Q-Table) set up
 # states
 states = []
+max_required_vector = 0
+max_upscale_vector = 0
 
 skills = []
 for course in mooc:
     for skill in mooc[course]:
-        if skill not in skills:
+        if skill[0] not in skills:
             skills.append(skill[0])
+        if max_required_vector < skill[1]:
+            max_required_vector = skill[1]
+        if max_upscale_vector < skill[2]:
+            max_upscale_vector = skill[2]
 
 for skill in skills:
     states.append({skill: 0})
@@ -34,9 +40,12 @@ for course in mooc:
 
 print(states)
 print(actions)
+print(max_required_vector)
+print(max_upscale_vector)
 
-# actions = ['d', 'u']
-#
+# transition probabilities
+transition_probabilities = np.zeros((len(states), len(actions), len(states)))
+
 # transition_probabilities = np.zeros((len(states), len(actions), len(states)))
 #
 # for state_index in range(len(states)):
