@@ -17,9 +17,9 @@ class Mdp:
         assert 0 <= self.random_termination <= 1
         self.cost_of_living = cost_of_living
 
-        self.value = {}
-        for state in states:
-            self.value[state] = 0.0
+        # self.value = {}
+        # for state in states:
+        #     self.value[state] = 0.0
 
     # def reset(self):
     #     for state in self.states:
@@ -68,7 +68,7 @@ class Mdp:
 
     # return random.choice(self.actions)
 
-    def estimate_value(self):
-        for _ in range(int(self.eps)):
-            for state in self.states:
-                self.value[state] = self.action_value(state, self.policy(state))
+    # def estimate_value(self):
+    #     for _ in range(int(self.eps)):
+    #         for state in self.states:
+    #             self.value[state] = self.action_value(state, self.policy(state))
