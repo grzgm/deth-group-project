@@ -55,7 +55,7 @@ Later in the paper we will use the two notation, which ease understanding and wr
 
 ### Actions
 
-Actions are defined by taking specific modules, each module has an associated upskilling vector $r_i$ and requirement vector $u_i$. Note that if value of the certain skill in the vector is 0, it is not denoted for the sake of clarity.
+Actions are defined by taking specific modules, each module has an associated upskilling vector $u_i$ and requirement vector $r_i$. Note that if value of the certain skill in the vector is 0, it is not denoted for the sake of clarity.
 
 #### Combo Modules
 1. **Statistical Methods in Number Theory for Beginners**
@@ -178,7 +178,7 @@ Actions are defined by taking specific modules, each module has an associated up
 		- $r_{Arithmetic} = 2$
 		- $r_{Statistics} = 1$
 	- Upskill vector:
-		- $r_{Arithmetic} = 1$
+		- $u_{Arithmetic} = 1$
 		- $u_{Statistics} = 3$
 
 
