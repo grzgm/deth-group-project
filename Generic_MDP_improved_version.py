@@ -4,8 +4,6 @@
 # In a generic stochastic MDP, the transition probabilities are not deterministic; they represent probabilities.
 
 import numpy as np
-from MDP_Environments_generator import MDPGridEnvironmentWithKeyGenerator
-
 
 class MDP:
     def __init__(self, states, actions, transitions, rewards, slipperiness, is_slippery, cost_of_living):
@@ -108,54 +106,4 @@ class MDP:
 
 # Example usage of the mdp class:
 
-def testMDPwithkeyGrid():
-    try:
-        actions = ['left', 'right', 'up', 'down']
-        grid_size = (1, 5)
-        state_to_attack_key_to = 3
-        locked_state = 5
 
-        Environment = MDPGridEnvironmentWithKeyGenerator(grid_size[0], grid_size[1], state_to_attack_key_to,
-                                                         locked_state, actions)
-        print("Grid Environment generated Successfully!")
-
-        is_slippery = False
-        probability_of_slipping = 0.1
-        cost_of_living = 0.1
-
-        mdp = MDP(Environment.states, Environment.actions, Environment.transitions,
-                  Environment.rewards, probability_of_slipping, is_slippery, cost_of_living)
-        print("MDP generated Successfully!")
-
-        # testing grabbing the key and going to the locked state
-        action = 'down'
-        mdp.reset('s3')
-        print(f"Start state: {mdp.current_state}")
-        actions_available = mdp.get_actions(mdp.current_state)
-        print(f"Available actions in state {mdp.current_state}: {actions_available}")
-        rewards_available = mdp.get_rewards(mdp.current_state, action)
-        print(f"Rewards for state {mdp.current_state}, action {action}: {rewards_available}")
-
-        # grab the key and go to the locked state
-        newstate, recievedreward, action_done = mdp.take_action(action)
-        Environment.update_environment(newstate)
-        print(f"Action {action_done} taken, newstate = {newstate}")
-
-        newstate, recievedreward, action_done = mdp.take_action('up')
-        Environment.update_environment(newstate)
-        print(f"Action {action_done} taken, newstate = {newstate}")
-
-        newstate, recievedreward, action_done = mdp.take_action('right')
-        Environment.update_environment(newstate)
-        print(f"Action {action_done} taken, newstate = {newstate}")
-
-        newstate, recievedreward, action_done = mdp.take_action('right')
-        Environment.update_environment(newstate)
-        print(f"Action {action_done} taken, newstate = {newstate}")
-
-    except ValueError as e:
-        print(f"Error: {e}")
-
-
-if __name__ == "__main__":
-    testMDPwithkeyGrid()
