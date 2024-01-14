@@ -113,14 +113,14 @@ for episode in range(episodes):
     # start episode
     for step in range(max_steps_in_episode):
         best_action = np.argmax(action_value_array[previous_state, :])
-        possible_actions = mdp.possible_actions(previous_state)
+        possible_actions = mdp.possible_actions_indexes(previous_state)
 
         # choose action based on epsilon-greedy policy
         # np.max(action_value_array[previous_state, :]) is there to balance starting states
         # when action_value_array is full of zeros and agent always goes with action with index 0
         if np.random.rand() < epsilon or np.max(action_value_array[previous_state, :]) or best_action not in possible_actions:
             # random action
-            action = np.random.choice(mdp.possible_actions(previous_state))
+            action = np.random.choice(mdp.possible_actions_indexes(previous_state))
         else:
             # best action
             action = best_action

@@ -57,7 +57,7 @@ for episode in range(episodes):
         # when action_value_array is full of zeros and agent always goes with action with index 0
         if np.random.rand() < epsilon or np.max(action_value_array[previous_state, :]):
             # random action
-            action = np.random.choice(mdp.possible_actions(previous_state))
+            action = np.random.choice(mdp.possible_actions_indexes(previous_state))
         else:
             # best action
             action = np.argmax(action_value_array[previous_state, :])
