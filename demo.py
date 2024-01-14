@@ -65,19 +65,6 @@ transition_probabilities[
     states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), actions.index("course3"), states.index(
         [{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])] = 1
 
-# transition_probabilities = np.zeros((len(states), len(actions), len(states)))
-#
-# for state_index in range(len(states)):
-#     for action_index in range(len(actions)):
-#         for next_state_index in range(len(states)):
-#             if state_index in [0, 6]:
-#                 continue
-#             elif action_index == 1 and state_index == next_state_index - 1:
-#                 transition_probabilities[state_index, action_index, next_state_index] = 1
-#             elif action_index == 0 and state_index == next_state_index + 1:
-#                 transition_probabilities[state_index, action_index, next_state_index] = 1
-#
-
 # rewards
 rewards = np.zeros((len(states), len(actions), len(states)))
 rewards[states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), actions.index("course3"), states.index(
