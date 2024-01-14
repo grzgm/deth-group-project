@@ -18,8 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "52874ab69d55d748",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "MDP.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -146,10 +159,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "473227c092ee8150",
+  "active": "52874ab69d55d748",
   "lastOpenFiles": [
-    "Untitled.md",
+    "MDP Implementations.md",
     "MDP.md",
+    "Untitled.md",
     "MDP Example canvas.canvas"
   ]
 }
