@@ -24,7 +24,7 @@ epsilon = 0.00
 # Discount Factor
 gamma = 0.9
 
-mdp = Mdp(states, actions, transition_probabilities, rewards, random_termination=0.3, cost_of_living=-1.5)
+mdp = Mdp(states, actions, transition_probabilities, rewards)
 
 for episode in range(episodes):
     print(f"episode: {episode}")
