@@ -13,8 +13,9 @@ episodes = 1000
 max_steps_in_episode = 1000
 start_state_index = 0
 
-q_learning_enabled = True
-monte_carlo_enabled = True
+dynamic_programming_enabled = True
+q_learning_enabled = False
+monte_carlo_enabled = False
 
 # Learning Rate
 alpha_q_learning = 0.04
@@ -49,6 +50,13 @@ for episode in range(episodes):
 
         # make an action
         new_state, reward, is_terminal = mdp.step(previous_state, action)
+
+        # dynamic programming
+        if dynamic_programming_enabled:
+            new_value = 0
+            for transition_probability in transition_probabilities[previous_state, action]:
+                new_value += transition_probability * (reward + gamma * action_value_array[new_state, np.argmax(action_value_array[new_state, :])])
+            action_value_array[previous_state, action] = new_value
 
         # update Action Value function (Q) for Q-learning
         if q_learning_enabled:
