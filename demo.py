@@ -2,7 +2,6 @@ import numpy as np
 from mdp import Mdp
 from builder import builder
 
-
 states, actions, transition_probabilities, rewards = builder()
 
 state_value_array = []
@@ -17,6 +16,8 @@ dynamic_programming_enabled = True
 q_learning_enabled = False
 monte_carlo_enabled = False
 
+# threshold for policy evaluation
+theta = 0.01
 # Learning Rate
 alpha_q_learning = 0.04
 alpha_monte_carlo = 0.1
@@ -26,6 +27,24 @@ epsilon = 0.00
 gamma = 0.9
 
 mdp = Mdp(states, actions, transition_probabilities, rewards)
+
+# dynamic programming
+if dynamic_programming_enabled:
+    # policy evaluation
+    while True:
+        difference = 0
+        for state in range(len(states)):
+            for action in range(len(actions)):
+                old_value = action_value_array[state, action]
+                new_value = 0
+                for new_state in range(len(states)):
+                    new_value += transition_probabilities[state, action, new_state] * (
+                            rewards[state, action, new_state] + gamma * action_value_array[
+                        new_state, np.argmax(action_value_array[new_state, :])])
+                action_value_array[state, action] = new_value
+                difference = max(difference, abs(old_value-new_value))
+        if difference < theta:
+            break
 
 for episode in range(episodes):
     print(f"episode: {episode}")
@@ -50,13 +69,6 @@ for episode in range(episodes):
 
         # make an action
         new_state, reward, is_terminal = mdp.step(previous_state, action)
-
-        # dynamic programming
-        if dynamic_programming_enabled:
-            new_value = 0
-            for transition_probability in transition_probabilities[previous_state, action]:
-                new_value += transition_probability * (reward + gamma * action_value_array[new_state, np.argmax(action_value_array[new_state, :])])
-            action_value_array[previous_state, action] = new_value
 
         # update Action Value function (Q) for Q-learning
         if q_learning_enabled:
