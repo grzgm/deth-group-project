@@ -179,7 +179,7 @@ if monte_carlo_enabled:
         if difference < theta:
             break
 
-# Action Value Array (Q-Table) at the end
+# Action Value Array at the end
 for a in actions:
     print(f'\t{a}\t', end='')
 print()
