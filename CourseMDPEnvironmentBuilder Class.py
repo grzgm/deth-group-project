@@ -3,7 +3,7 @@ import numpy as np
 from itertools import product
 
 class CourseMDPEnvironmentBuilder:
-    def __init__(self, mooc, alpha, beta, gamma, learning_ability):
+    def __init__(self, mooc, alpha, beta, gamma, learning_ability, max_skill_level):
         # alpha parameter for updating state on succes
         self.alpha = alpha
         # beta parameter for updating state on failure
@@ -21,7 +21,7 @@ class CourseMDPEnvironmentBuilder:
         self.transition_probabilities = None
         self.rewards = None
 
-        self.max_skill_levels = [4, 4, 4]
+        self.max_skill_levels = [4, 4, 4] # temporary, should be = max_skill_level
 
     # get the requirements for a given action (course)
     def GetRequirements(self, action):
@@ -53,6 +53,7 @@ class CourseMDPEnvironmentBuilder:
 
             # Check if the skill level has reached the maximum
             if current_skill_level < self.max_skill_levels[idx]:
+                # if the max has not been reached update the skill level
                 new_state[idx][skill_name] += min(upskill_vector[idx], self.max_skill_levels[idx] - current_skill_level)
 
         return new_state
@@ -114,7 +115,7 @@ class CourseMDPEnvironmentBuilder:
         for state in self.states:
             for action in self.actions:
                 # Get the transition probabilities for the given state and action
-                probability_of_passing, _ = self.CalculateTransitionProbability(state, action)
+                probability_of_passing, probability_of_failing = self.CalculateTransitionProbability(state, action)
 
                 # Get the next state for the given action
                 next_state = self.GetNextState(state, action)
@@ -134,7 +135,7 @@ class CourseMDPEnvironmentBuilder:
 
                 # Set the transition probability for the given state, action, and current state (failing)
                 self.transition_probabilities[
-                    current_state_index, current_action_index, current_state_index] = 1 - probability_of_passing
+                    current_state_index, current_action_index, current_state_index] = probability_of_failing
 
         # Print the transition probabilities
         print(self.transition_probabilities)
@@ -160,7 +161,7 @@ mooc = {
         "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
     }
 
-builder = CourseMDPEnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1)
+builder = CourseMDPEnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1, 0)
 builder.CreateStates()
 builder.CreateActions()
 builder.CreateTransitionProbabilities()
