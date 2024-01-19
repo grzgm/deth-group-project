@@ -90,17 +90,18 @@ Actions are defined by taking specific modules, each module has an associated up
 
 ### Transition Probabilities
 
-Probability of passing a module is proportional to the dot product of the student's skill level and the module's requirement vector. - If the student passes the module, their skills are updated by $s + \alpha \cdot r_i \cdot x$ where $x$ is a random soft mask and $\alpha > \beta$.
-
+- Probability of passing a module is proportional to the dot product of the student's skill level and the module's requirement vector. 
+- If the student passes the module, their skills are updated by $s + \alpha \cdot r_i \cdot x$ where $x$ is a random soft mask and $\alpha > \beta$.
 - If the student fails, they might still get a slight skill improvement $s + \beta \cdot r_i \cdot x$ where $\beta < \alpha$
 
 ### Terminal State Probability
 
 Passing every module costs -1, and reaching the end state grants a reward of +1.  
 The transition probability for passing a module can be represented as:  
-$$P(s, s^ \prime, a_i) = \frac{1}{1+ \exp(-\gamma u_i \cdot s)} $$
+$$P(s, s^ \prime, a_i) = \frac{1}{1+ \exp(-\gamma r_i \cdot s)} $$
 
-where $a_i$ is the action of taking module with requirement $u_i$ and module learning outcomes $r_i$  
+where $a_i$ is the action of taking module with requirement $r_i$ and module learning outcomes $r_i$  
+
 The state transition for passing the module:  
 $$ s^ \prime = s + \alpha \cdot r_i \odot x $$
 

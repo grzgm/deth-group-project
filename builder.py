@@ -42,7 +42,7 @@ def builder():
             state.append({skills[i]: skill_levels[i]})
         states.append(state)
 
-    # print(states)
+    #print(states)
 
     # actions
     actions = []
@@ -65,6 +65,8 @@ def builder():
     transition_probabilities[
         states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), actions.index("course3"), states.index(
             [{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])] = 1
+
+    #print(transition_probabilities)
 
     # rewards
     rewards = np.zeros((len(states), len(actions), len(states)))
