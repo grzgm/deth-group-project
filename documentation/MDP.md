@@ -111,6 +111,15 @@ where $x$ is a mask that attenuates entries of $m$ by element wise multiplicatio
 
 The terminal state probability involves the student reaching the desired minimal skill level in all domains, leading to a reward of +1.
 
+### Rewards
+
+The rewards for the agent will be based on a few factors:
+- Passing or failing a module
+- How long the agent is learning (cost of living)
+- Achieving the requested goal
+
+To incentivize the agent to find the most efficient route a cost of living is taking into account. We made the decision to not implement this through states (as a budget for example) but through reward logic. Implementing this feature through states will lead to a lot more different states to calculate which is something we do not want, especially when the functionality is the same.
+
 ## Algorithms
 
 For the purpose of solving the problem we have implemented 3 different algorithms:
