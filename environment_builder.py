@@ -146,19 +146,13 @@ class EnvironmentBuilder:
 
 # testing the builder functions
 
-# mooc = {
-#     "course name": [["skill name", "required vector", "upscale vector"], ["skill name", "required vector", "upscale vector"]],
-#     "course name": [["skill name", "required vector", "upscale vector"], ["skill name", "required vector", "upscale vector"]]
-# }
-
-# Example MOOC Dictionary
 mooc = {
         "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
         "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
         "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
     }
 
-builder = EnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1)
+builder = EnvironmentBuilder(mooc, 0.1)
 builder.create_states()
 builder.create_actions()
 builder.create_transition_probabilities()
