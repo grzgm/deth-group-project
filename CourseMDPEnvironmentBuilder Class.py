@@ -3,7 +3,7 @@ import numpy as np
 from itertools import product
 
 class EnvironmentBuilder:
-    def __init__(self, mooc, alpha, beta, gamma, learning_ability, max_skill_level):
+    def __init__(self, mooc, alpha, beta, gamma, learning_ability):
         # alpha parameter for updating state on succes
         self.alpha = alpha
         # beta parameter for updating state on failure
@@ -57,7 +57,7 @@ class EnvironmentBuilder:
             # Check if the skill level has reached the maximum
             if current_skill_level < self.max_skill_level:
                 # if the max has not been reached update the skill level
-                new_state[idx][skill_name] += min(upskill_vector[idx], self.max_skill_level - current_skill_level)
+                new_state[idx][skill_name] += upskill_vector[idx]
 
         return new_state
 
@@ -85,7 +85,7 @@ class EnvironmentBuilder:
         # action is taking a course, so there is only need to get names of courses
         for course in self.mooc:
             self.actions.append(course)
-        # print(actions)
+        print(self.actions)
 
     def calculate_transition_probability(self, source_state, action):
         # Retrieve the 'required vector' from the MOOC dictionary for the specific action
@@ -144,6 +144,13 @@ class EnvironmentBuilder:
         self.rewards[self.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), self.actions.index("course3"), self.states.index(
             [{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])] = 1
 
+    def get_everything(self):
+        self.create_states()
+        self.create_actions()
+        self.create_transition_probabilities()
+        self.create_rewards()
+
+
 # testing the builder functions
 
 # mooc = {
@@ -158,7 +165,7 @@ mooc = {
         "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
     }
 
-builder = EnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1, 0)
+builder = EnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1)
 builder.create_states()
 builder.create_actions()
 builder.create_transition_probabilities()
