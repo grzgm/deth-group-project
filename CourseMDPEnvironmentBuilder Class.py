@@ -2,7 +2,7 @@ import copy
 import numpy as np
 from itertools import product
 
-class CourseMDPEnvironmentBuilder:
+class EnvironmentBuilder:
     def __init__(self, mooc, alpha, beta, gamma, learning_ability, max_skill_level):
         # alpha parameter for updating state on succes
         self.alpha = alpha
@@ -27,26 +27,26 @@ class CourseMDPEnvironmentBuilder:
 
 
     # get the requirements for a given action (course)
-    def GetRequirements(self, action):
+    def get_requirement_vector(self, action):
         # Get the requirements for the given action
         action_requirements = [next((skill[1] for skill in self.mooc[action] if skill[0] == s), 0) for s in self.skills]
 
         return np.array(action_requirements)
 
-    def GetStudentSkill(self, state):
+    def get_student_skill(self, state):
         # Extract skill values from the state
         student_skill_levels = np.array([next(iter(skill.values())) for skill in state])
         return student_skill_levels
 
-    def GetUpskillVector(self, action):
+    def get_upskill_vector(self, action):
         # Get the upskill vector for the given action (course)
         upskill_vector = [next((skill[2] for skill in self.mooc[action] if skill[0] == s), 0) for s in self.skills]
 
         return upskill_vector
 
-    def GetNextState(self, source_state, action):
+    def get_next_state(self, source_state, action):
         # Get the upskill vector for the given action (course)
-        upskill_vector = self.GetUpskillVector(action)
+        upskill_vector = self.get_upskill_vector(action)
 
         # Update the state based on the action result (passing)
         new_state = copy.deepcopy(source_state)
@@ -69,7 +69,7 @@ class CourseMDPEnvironmentBuilder:
                     self.skills.append(skill[0])
                 self.max_skill_level = max(self.max_skill_level, skill[1], skill[2])
 
-    def CreateStates(self):
+    def create_states(self):
         # Generate all permutations of possible skill levels for amount of skills
         all_permutations = product(range(self.max_skill_level + 3), repeat=len(self.skills))
 
@@ -81,18 +81,18 @@ class CourseMDPEnvironmentBuilder:
             self.states.append(state)
         print(self.states)
 
-    def CreateActions(self):
+    def create_actions(self):
         # action is taking a course, so there is only need to get names of courses
         for course in self.mooc:
             self.actions.append(course)
         # print(actions)
 
-    def CalculateTransitionProbability(self, source_state, action):
+    def calculate_transition_probability(self, source_state, action):
         # Retrieve the 'required vector' from the MOOC dictionary for the specific action
-        required_vector = self.GetRequirements(action)
+        required_vector = self.get_requirement_vector(action)
 
         # Get the student's skill levels from the source_state
-        student_skill_levels = self.GetStudentSkill(source_state)
+        student_skill_levels = self.get_student_skill(source_state)
 
         # Calculate the dot product of the requirement vector and the skill level vector
         dot_product = np.dot(required_vector, student_skill_levels)
@@ -105,17 +105,17 @@ class CourseMDPEnvironmentBuilder:
 
         return probability_of_passing, probability_of_failing
 
-    def CreateTransitionProbabilities(self):
+    def create_transition_probabilities(self):
         # create the transition probabilities
         self.transition_probabilities = np.zeros((len(self.states), len(self.actions), len(self.states)))
 
         for state in self.states:
             for action in self.actions:
                 # Get the transition probabilities for the given state and action
-                probability_of_passing, probability_of_failing = self.CalculateTransitionProbability(state, action)
+                probability_of_passing, probability_of_failing = self.calculate_transition_probability(state, action)
 
                 # Get the next state for the given action
-                next_state = self.GetNextState(state, action)
+                next_state = self.get_next_state(state, action)
 
                 # Get the index of the current state
                 current_state_index = self.states.index(state)
@@ -137,7 +137,7 @@ class CourseMDPEnvironmentBuilder:
         # Print the transition probabilities
         print(self.transition_probabilities)
 
-    def CreateRewards(self):
+    def create_rewards(self):
         # Actual reward logic still needs to be added for now manual
         self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
 
@@ -158,10 +158,10 @@ mooc = {
         "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
     }
 
-builder = CourseMDPEnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1, 0)
-builder.CreateStates()
-builder.CreateActions()
-builder.CreateTransitionProbabilities()
+builder = EnvironmentBuilder(mooc, 0.1, 0.1, 0.1, 0.1, 0)
+builder.create_states()
+builder.create_actions()
+builder.create_transition_probabilities()
 #print(builder.GetNextState([{'skillA': 4}, {'skillB': 4}, {'skillC': 4}], "course3"))
 
 print("Probability of passing course3 with skill levels [1, 1, 1]:")
