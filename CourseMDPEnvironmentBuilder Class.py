@@ -14,14 +14,17 @@ class CourseMDPEnvironmentBuilder:
         # gamma parameter for calculating transition probability
         self.gamma = gamma
 
-        self.skills = []
+        # extract data to construct the states, actions, transition_probabilities, rewards
         self.mooc = mooc
+        self.skills = []
+        self.max_skill_level = 0
+        self.extarct_skills_and_max_skill_level()
+
         self.states = []
         self.actions = []
         self.transition_probabilities = None
         self.rewards = None
 
-        self.max_skill_levels = [4, 4, 4] # temporary, should be = max_skill_level
 
     # get the requirements for a given action (course)
     def GetRequirements(self, action):
@@ -52,29 +55,23 @@ class CourseMDPEnvironmentBuilder:
             current_skill_level = skill_level[skill_name]
 
             # Check if the skill level has reached the maximum
-            if current_skill_level < self.max_skill_levels[idx]:
+            if current_skill_level < self.max_skill_level:
                 # if the max has not been reached update the skill level
-                new_state[idx][skill_name] += min(upskill_vector[idx], self.max_skill_levels[idx] - current_skill_level)
+                new_state[idx][skill_name] += min(upskill_vector[idx], self.max_skill_level - current_skill_level)
 
         return new_state
 
-    def CreateStates(self):
-        # states, actions, transition probabilities, rewards, state action array (Q-Table) set up
-        max_required_vector = 0
-        max_upscale_vector = 0
-
+    def extarct_skills_and_max_skill_level(self):
         # getting every skill name from the courses and max required vector and upscale vector
         for course in self.mooc:
             for skill in self.mooc[course]:
                 if skill[0] not in self.skills:
                     self.skills.append(skill[0])
-                if max_required_vector < skill[1]:
-                    max_required_vector = skill[1]
-                if max_upscale_vector < skill[2]:
-                    max_upscale_vector = skill[2]
+                self.max_skill_level = max(self.max_skill_level, skill[1], skill[2])
 
+    def CreateStates(self):
         # Generate all permutations of possible skill levels for amount of skills
-        all_permutations = product(range(max_upscale_vector + 3), repeat=len(self.skills))
+        all_permutations = product(range(self.max_skill_level + 3), repeat=len(self.skills))
 
         # each permutaions of skill levels assign as a possible state
         for skill_levels in all_permutations:
