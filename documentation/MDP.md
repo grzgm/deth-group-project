@@ -50,7 +50,7 @@ Later in the paper we will use the two notation, which ease understanding and wr
 
 ### Actions
 
-Actions are defined by taking specific modules, each module has an associated upskilling vector $u_i$ and requirement vector $r_i$. Note that if value of the certain skill in the vector is 0, it is not denoted for the sake of clarity.
+Actions are defined by taking specific courses, each course has an associated upskilling vector $u_i$ and requirement vector $r_i$. Note that if value of the certain skill in the vector is 0, it is not denoted for the sake of clarity.
 
 1. Statistical Methods in Number Theory for Beginners
    - Requirements vector:
@@ -90,23 +90,22 @@ Actions are defined by taking specific modules, each module has an associated up
 
 ### Transition Probabilities
 
-- Probability of passing a module is proportional to the dot product of the student's skill level and the module's requirement vector. 
-- If the student passes the module, their skills are updated by $s + \alpha \cdot r_i \cdot x$ where $x$ is a random soft mask and $\alpha > \beta$.
-- If the student fails, they might still get a slight skill improvement $s + \beta \cdot r_i \cdot x$ where $\beta < \alpha$
+Probability of passing a course is proportional to the dot product of the student's skill level and the course's requirement vector. 
+- If the student passes the course, their skills are updated by $s + \alpha \cdot u_i \cdot x$ where $x$ is a random soft mask and $\alpha > \beta$.
+- If the student fails, they might still get a slight skill improvement $s + \beta \cdot u_i \cdot x$ where $\beta < \alpha$
 
 ### Terminal State Probability
 
-Passing every module costs -1, and reaching the end state grants a reward of +1.  
-The transition probability for passing a module can be represented as:  
+The transition probability for passing a course can be represented as:  
 $$P(s, s^ \prime, a_i) = \frac{1}{1+ \exp(-\gamma r_i \cdot s)} $$
 
-where $a_i$ is the action of taking module with requirement $r_i$ and module learning outcomes $r_i$  
+where $a_i$ is the action of taking course with requirement $r_i$ and course learning outcomes $r_i$  
 
-The state transition for passing the module:  
-$$ s^ \prime = s + \alpha \cdot r_i \odot x $$
+The state transition for passing the course:  
+$$ s^ \prime = s + \alpha \cdot u_i \odot x $$
 
 And for failing:  
-$$ s^ \prime = s + \beta \cdot r_i \odot x $$
+$$ s^ \prime = s + \beta \cdot u_i \odot x $$
 
 where $x$ is a mask that attenuates entries of $m$ by element wise multiplication $\odot$ . Each student has its own $x$ such that each student has its own learning abilities.
 
@@ -115,11 +114,11 @@ The terminal state probability involves the student reaching the desired minimal
 ### Rewards
 
 The rewards for the agent will be based on a few factors:
-- Passing or failing a module
+- Passing or failing a course
 - How long the agent is learning (cost of living)
 - Achieving the requested goal
 
-To incentivize the agent to find the most efficient route a cost of living is taking into account. We made the decision to not implement this through states (as a budget for example) but through reward logic. Implementing this feature through states will lead to a lot more different states to calculate which is something we do not want, especially when the functionality is the same.
+Passing every course costs -1, and reaching the end state grants a reward of +1. To incentivize the agent to find the most efficient route a cost of living is taking into account. We made the decision to not implement this through states (as a budget for example) but through reward logic. Implementing this feature through states will lead to a lot more different states to calculate which is something we do not want, especially when the functionality is the same.
 
 ## Algorithms
 
