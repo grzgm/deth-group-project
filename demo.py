@@ -1,6 +1,6 @@
 import numpy as np
 from mdp import Mdp
-from builder import builder
+from environment_builder import EnvironmentBuilder
 
 
 def dynamic_programming():
@@ -114,8 +114,21 @@ def monte_carlo():
 
     return difference
 
+# mooc = {
+#     "course name": [["skill name", "required vector", "upscale vector"], ["skill name", "required vector", "upscale vector"]],
+#     "course name": [["skill name", "required vector", "upscale vector"], ["skill name", "required vector", "upscale vector"]]
+# }
 
-states, actions, transition_probabilities, rewards = builder()
+# Example MOOC Dictionary
+mooc = {
+        "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
+        "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
+        "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
+    }
+
+# states, actions, transition_probabilities, rewards = builder()
+builder = EnvironmentBuilder(mooc, 0.1)
+states, actions, transition_probabilities, rewards = builder.get_everything()
 
 state_value_array = []
 action_value_array = np.zeros((len(states), len(actions)))

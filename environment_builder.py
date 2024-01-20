@@ -119,6 +119,9 @@ class EnvironmentBuilder:
                 # Get the index of the current action
                 current_action_index = self.actions.index(action)
 
+                if next_state_index == current_state_index:
+                    continue
+
                 # Set the transition probability for the given state, action, and next state (passing)
                 self.transition_probabilities[
                     current_state_index, current_action_index, next_state_index] = probability_of_passing
@@ -135,7 +138,7 @@ class EnvironmentBuilder:
         self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
 
         self.rewards[self.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), self.actions.index("course3"), self.states.index(
-            [{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])] = 1
+            [{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])] = 1
 
     def get_everything(self):
         self.create_states()
@@ -166,3 +169,11 @@ if __name__ == '__main__':
     print("Probability of failing course3 with skill levels [1, 1, 1]:")
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
     builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}])])
+
+    for s in range(len(builder.states)):
+        for a in range(len(builder.actions)):
+            # print(np.sum(builder.transition_probabilities[s, a, :]))
+            for ns in range(len(builder.states)):
+                pass
+                # if builder.transition_probabilities[s, a, ns] != 0:
+                #     print(builder.transition_probabilities[s, a, ns])
