@@ -3,16 +3,9 @@ import numpy as np
 from itertools import product
 
 class EnvironmentBuilder:
-    def __init__(self, mooc, alpha, beta, gamma, learning_ability):
-        # alpha parameter for updating state on succes
-        self.alpha = alpha
-        # beta parameter for updating state on failure
-        self.beta = beta
-        # learning ability x for updating states
-        self.learning_ability = learning_ability
-
+    def __init__(self, mooc, transition_probability_gamma):
         # gamma parameter for calculating transition probability
-        self.gamma = gamma
+        self.gamma = transition_probability_gamma
 
         # extract data to construct the states, actions, transition_probabilities, rewards
         self.mooc = mooc
