@@ -72,13 +72,13 @@ class EnvironmentBuilder:
             for i in range(len(skill_levels)):
                 state.append({self.skills[i]: skill_levels[i]})
             self.states.append(state)
-        print(self.states)
+        # print(self.states)
 
     def create_actions(self):
         # action is taking a course, so there is only need to get names of courses
         for course in self.mooc:
             self.actions.append(course)
-        print(self.actions)
+        # print(self.actions)
 
     def calculate_transition_probability(self, source_state, action):
         # Retrieve the 'required vector' from the MOOC dictionary for the specific action
@@ -128,7 +128,7 @@ class EnvironmentBuilder:
                     current_state_index, current_action_index, current_state_index] = probability_of_failing
 
         # Print the transition probabilities
-        print(self.transition_probabilities)
+        # print(self.transition_probabilities)
 
     def create_rewards(self):
         # Actual reward logic still needs to be added for now manual
@@ -142,26 +142,27 @@ class EnvironmentBuilder:
         self.create_actions()
         self.create_transition_probabilities()
         self.create_rewards()
+        return self.states, self.actions, self.transition_probabilities, self.rewards
 
 
 # testing the builder functions
+if __name__ == '__main__':
+    mooc = {
+            "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
+            "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
+            "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
+        }
 
-mooc = {
-        "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
-        "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
-        "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
-    }
+    builder = EnvironmentBuilder(mooc, 0.1)
+    builder.create_states()
+    builder.create_actions()
+    builder.create_transition_probabilities()
+    #print(builder.GetNextState([{'skillA': 4}, {'skillB': 4}, {'skillC': 4}], "course3"))
 
-builder = EnvironmentBuilder(mooc, 0.1)
-builder.create_states()
-builder.create_actions()
-builder.create_transition_probabilities()
-#print(builder.GetNextState([{'skillA': 4}, {'skillB': 4}, {'skillC': 4}], "course3"))
+    print("Probability of passing course3 with skill levels [1, 1, 1]:")
+    print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
+    builder.states.index([{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])])
 
-print("Probability of passing course3 with skill levels [1, 1, 1]:")
-print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
-builder.states.index([{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])])
-
-print("Probability of failing course3 with skill levels [1, 1, 1]:")
-print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
-builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}])])
+    print("Probability of failing course3 with skill levels [1, 1, 1]:")
+    print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
+    builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}])])
