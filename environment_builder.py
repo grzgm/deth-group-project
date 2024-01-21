@@ -151,6 +151,21 @@ class EnvironmentBuilder:
         self.rewards[self.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), self.actions.index("course3"), self.states.index(
             [{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])] = 1
 
+    # This version of the create rewards correctly assigns the rewards, but seems to give some problems to the demo when q-learning
+    def create_rewards_v2(self):
+        # Initialize the rewards array
+        self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
+
+        # Iterate over all states and actions
+        for s_idx, source_state in enumerate(self.states):
+            for a_idx, action in enumerate(self.actions):
+                for ns_idx, next_state in enumerate(self.states):
+                    # Check if the next state is a passing state based on the action
+                    passed = self.get_next_state(source_state, action, True) == next_state
+
+                    # Assign reward based on passing or failing, 3 for passing and 1 for failing
+                    self.rewards[s_idx, a_idx, ns_idx] = 3 if passed else 1
+
     def get_everything(self):
         self.create_states()
         self.create_actions()
@@ -176,6 +191,7 @@ if __name__ == '__main__':
     builder.create_states()
     builder.create_actions()
     builder.create_transition_probabilities()
+    builder.create_rewards()
     print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", True))
 
     print("Probability of passing course3 with skill levels [1, 1, 1]:")
@@ -186,10 +202,20 @@ if __name__ == '__main__':
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
     builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}])])
 
+    print("Reward of passing course3 with skill levels [1, 1, 1]:")
+    print(builder.rewards[
+              builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
+              builder.states.index([{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])])
+
+    print("Reward of Failing course3 with skill levels [1, 1, 1]:")
+    print(builder.rewards[
+              builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
+              builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}])])
+
     for s in range(len(builder.states)):
         for a in range(len(builder.actions)):
-            print(np.sum(builder.transition_probabilities[s, a, :]))
+           # print(np.sum(builder.transition_probabilities[s, a, :]))
             for ns in range(len(builder.states)):
                 pass
-                if builder.transition_probabilities[s, a, ns] != 0:
-                    print(builder.transition_probabilities[s, a, ns])
+                #if builder.transition_probabilities[s, a, ns] != 0:
+                   # print(builder.transition_probabilities[s, a, ns])
