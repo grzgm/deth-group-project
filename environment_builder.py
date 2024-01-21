@@ -1,11 +1,15 @@
 import copy
 import numpy as np
+import math
 from itertools import product
 
 class EnvironmentBuilder:
-    def __init__(self, mooc, transition_probability_gamma):
-        # gamma parameter for calculating transition probability
-        self.gamma = transition_probability_gamma
+    def __init__(self, mooc, transition_probability_gamma, alpha, beta, student_learning_ability):
+        # Hyperparameters
+        self.alpha = alpha  # for state updating when passing
+        self.beta = beta  # for state updating when failing
+        self.student_learning_ability = student_learning_ability  # student learning ability for state updating
+        self.gamma = transition_probability_gamma  # gamma parameter for calculating transition probability
 
         # extract data to construct the states, actions, transition_probabilities, rewards
         self.mooc = mooc
@@ -37,7 +41,7 @@ class EnvironmentBuilder:
 
         return upskill_vector
 
-    def get_next_state(self, source_state, action):
+    def get_next_state(self, source_state, action, passed):
         # Get the upskill vector for the given action (course)
         upskill_vector = self.get_upskill_vector(action)
 
@@ -49,8 +53,13 @@ class EnvironmentBuilder:
 
             # Check if the skill level has reached the maximum
             if current_skill_level < self.max_skill_level:
-                # if the max has not been reached update the skill level
-                new_state[idx][skill_name] += upskill_vector[idx]
+                # if the max has not been reached update the skill level based on passing or failing
+                update_value = self.alpha * upskill_vector[idx] * self.student_learning_ability if passed \
+                    else self.beta * upskill_vector[idx] * self.student_learning_ability
+                new_state[idx][skill_name] += update_value
+
+                # Ensure the skill level is an integer
+                new_state[idx][skill_name] = math.floor(new_state[idx][skill_name])
 
         return new_state
 
@@ -107,28 +116,30 @@ class EnvironmentBuilder:
                 # Get the transition probabilities for the given state and action
                 probability_of_passing, probability_of_failing = self.calculate_transition_probability(state, action)
 
-                # Get the next state for the given action
-                next_state = self.get_next_state(state, action)
+                # Get the next state for the given action when passing and failing
+                next_state_pass = self.get_next_state(state, action, True)
+                next_state_fail = self.get_next_state(state, action, False)
 
                 # Get the index of the current state
                 current_state_index = self.states.index(state)
 
-                # Get the index of the next state
-                next_state_index = self.states.index(next_state)
+                # Get the index of the next states
+                next_state_index_pass = self.states.index(next_state_pass)
+                next_state_index_fail = self.states.index(next_state_fail)
 
                 # Get the index of the current action
                 current_action_index = self.actions.index(action)
 
-                if next_state_index == current_state_index:
-                    continue
+                #if next_state_index == current_state_index:
+                  #  continue
 
                 # Set the transition probability for the given state, action, and next state (passing)
                 self.transition_probabilities[
-                    current_state_index, current_action_index, next_state_index] = probability_of_passing
+                    current_state_index, current_action_index, next_state_index_pass] = probability_of_passing
 
                 # Set the transition probability for the given state, action, and current state (failing)
                 self.transition_probabilities[
-                    current_state_index, current_action_index, current_state_index] = probability_of_failing
+                    current_state_index, current_action_index, next_state_index_fail] = probability_of_failing
 
         # Print the transition probabilities
         # print(self.transition_probabilities)
@@ -156,15 +167,20 @@ if __name__ == '__main__':
             "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
         }
 
-    builder = EnvironmentBuilder(mooc, 0.1)
+    # hyperparameters
+    alpha = 0.5
+    beta = 0.1
+    student_learning_ability = 1
+
+    builder = EnvironmentBuilder(mooc, 0.1, alpha, beta, student_learning_ability)
     builder.create_states()
     builder.create_actions()
     builder.create_transition_probabilities()
-    #print(builder.GetNextState([{'skillA': 4}, {'skillB': 4}, {'skillC': 4}], "course3"))
+    print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", True))
 
     print("Probability of passing course3 with skill levels [1, 1, 1]:")
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
-    builder.states.index([{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])])
+    builder.states.index([{'skillA': 1}, {'skillB': 2}, {'skillC': 2}])])
 
     print("Probability of failing course3 with skill levels [1, 1, 1]:")
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
