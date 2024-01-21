@@ -130,8 +130,8 @@ class EnvironmentBuilder:
                 # Get the index of the current action
                 current_action_index = self.actions.index(action)
 
-                #if next_state_index == current_state_index:
-                  #  continue
+                if next_state_index_pass == current_state_index and next_state_index_fail == current_state_index:
+                    continue
 
                 # Set the transition probability for the given state, action, and next state (passing)
                 self.transition_probabilities[
@@ -188,8 +188,8 @@ if __name__ == '__main__':
 
     for s in range(len(builder.states)):
         for a in range(len(builder.actions)):
-            # print(np.sum(builder.transition_probabilities[s, a, :]))
+            print(np.sum(builder.transition_probabilities[s, a, :]))
             for ns in range(len(builder.states)):
                 pass
-                # if builder.transition_probabilities[s, a, ns] != 0:
-                #     print(builder.transition_probabilities[s, a, ns])
+                if builder.transition_probabilities[s, a, ns] != 0:
+                    print(builder.transition_probabilities[s, a, ns])

@@ -126,8 +126,15 @@ mooc = {
         "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
     }
 
+# hyperparameters environment builder
+transition_probability_gamma = 0.1
+alpha_state_update = 0.5
+beta_state_update = 0.1
+student_learning_ability = 1
+
 # states, actions, transition_probabilities, rewards = builder()
-builder = EnvironmentBuilder(mooc, 0.1)
+builder = EnvironmentBuilder(mooc, transition_probability_gamma, alpha_state_update, beta_state_update,
+                             student_learning_ability)
 states, actions, transition_probabilities, rewards = builder.get_everything()
 
 state_value_array = []
