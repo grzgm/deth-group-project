@@ -129,7 +129,7 @@ mooc = {
 
 # hyperparameters environment builder
 transition_probability_gamma = 0.1
-alpha_state_update = 0.5
+alpha_state_update = 1
 beta_state_update = 0.1
 student_learning_ability = 1
 
@@ -148,13 +148,13 @@ start_state_index = 0
 
 dynamic_programming_enabled = False
 q_learning_enabled = False
-monte_carlo_enabled = False
+monte_carlo_enabled = True
 
 # threshold for policy evaluation
-theta = 0.0000001
+theta = 0.02
 # Learning Rate
 alpha_q_learning = 0.04
-alpha_monte_carlo = 0.1
+alpha_monte_carlo = 0.04
 # Exploration Rate
 epsilon = 0.00
 # Discount Factor
@@ -171,13 +171,13 @@ episode = 0
 if q_learning_enabled:
     # policy evaluation
     for episode in range(episodes):
-        print(f"episode: {episode}")
+        print(f"q_learning episode: {episode}")
         q_learning()
 
     # policy evaluation
     while True:
         episode += 1
-        print(f"iteration: {episode}")
+        print(f"q_learning iteration: {episode}")
 
         difference = q_learning()
         if difference < theta:
@@ -188,13 +188,13 @@ episode = 0
 if monte_carlo_enabled:
     # policy evaluation
     for episode in range(episodes):
-        print(f"episode: {episode}")
+        print(f"monte_carlo episode: {episode}")
         monte_carlo()
 
     # policy evaluation
     while True:
         episode += 1
-        print(f"iteration: {episode}")
+        print(f"monte_carlo iteration: {episode}")
 
         difference = monte_carlo()
         if difference < theta:
