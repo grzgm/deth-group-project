@@ -10,7 +10,6 @@ class Solver:
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
 
     def reset_solver(self):
-
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
 
     def solve_with_dynamic_programming(self, theta, gamma):
@@ -183,6 +182,11 @@ class Solver:
 
         # Set custom labels for the y-axis
         plt.yticks(np.arange(len(self.mdp.states)), self.mdp.states)
+
+        # Annotate each cell with its value
+        for i in range(len(self.mdp.states)):
+            for j in range(len(self.mdp.actions)):
+                plt.text(j, i, f'{self.action_value_array[i, j]:.2f}', ha='center', va='center', color='w')
 
         # Display the plot
         plt.title('Action-Value Array')
