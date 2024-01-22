@@ -30,14 +30,25 @@ mdp = Mdp(states, actions, transition_probabilities, rewards)
 solver = Solver(mdp)
 
 # dynamic programming
-solver.solve_with_dynamic_programming(theta=0.01, gamma=0.9)
+solver.solve_with_dynamic_programming(theta=0.000001, gamma=0.9)
 solver.create_plot()
 
 # q-learning
 solver.reset_solver()
 solver.solve_with_q_learning(True, True,
                              episodes=10,
-                             theta=0.01,
+                             theta=0.0052,
+                             max_steps_in_episode=1000,
+                             start_state_index=0,
+                             alpha=0.04,
+                             epsilon=0.00,
+                             gamma=0.9)
+solver.create_plot()
+
+solver.reset_solver()
+solver.solve_with_q_learning(True, True,
+                             episodes=10,
+                             theta=0.005,
                              max_steps_in_episode=1000,
                              start_state_index=0,
                              alpha=0.04,
