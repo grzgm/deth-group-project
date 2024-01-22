@@ -8,6 +8,7 @@ class Solver:
         self.mdp = mdp
 
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
+        self.episode_returns = []
 
     def reset_solver(self):
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
@@ -75,6 +76,7 @@ class Solver:
     def __q_learning(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma):
         # start episode
         difference = 0
+        episode_return = 0
         previous_state = start_state_index
         for step in range(max_steps_in_episode):
             best_action = np.argmax(self.action_value_array[previous_state, :])
@@ -97,6 +99,8 @@ class Solver:
             # make an action
             new_state, reward, is_terminal = self.mdp.step(previous_state, action)
 
+            episode_return += reward
+
             # update Action Value function (Q)
             new_value = (1 - alpha) * self.action_value_array[
                 previous_state, action] + alpha * (
@@ -111,6 +115,7 @@ class Solver:
 
             difference = max(difference, abs(old_value - new_value))
 
+        self.episode_returns.append(episode_return)
         return difference
 
     def __monte_carlo(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma):
@@ -161,6 +166,7 @@ class Solver:
 
             difference = max(difference, abs(old_value - new_value))
 
+        self.episode_returns.append(episode_return)
         return difference
 
     def create_plot(self):
@@ -190,4 +196,15 @@ class Solver:
 
         # Display the plot
         plt.title('Action-Value Array')
+        plt.show()
+
+        # Create a plot
+        plt.plot(self.episode_returns)
+
+        # Add labels to the plot
+        plt.xlabel('Index')
+        plt.ylabel('Value')
+        plt.title('Plot of Array of Numbers')
+
+        # Display the plot
         plt.show()
