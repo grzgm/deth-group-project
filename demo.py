@@ -16,7 +16,7 @@ mooc = {
 
 # hyperparameters environment builder
 transition_probability_gamma = 0.1
-alpha_state_update = 1
+alpha_state_update = 5
 beta_state_update = 0.1
 student_learning_ability = 1
 

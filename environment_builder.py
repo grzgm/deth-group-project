@@ -61,6 +61,10 @@ class EnvironmentBuilder:
                 # Ensure the skill level is an integer
                 new_state[idx][skill_name] = math.floor(new_state[idx][skill_name])
 
+                # if the new state exceeds the maximum skill level, set it to the maximum
+                if new_state[idx][skill_name] > self.max_skill_level:
+                    new_state[idx][skill_name] = self.max_skill_level
+
         return new_state
 
     def extarct_skills_and_max_skill_level(self):
@@ -184,8 +188,8 @@ if __name__ == '__main__':
         }
 
     # hyperparameters
-    alpha = 0.5
-    beta = 0.1
+    alpha = 2.0
+    beta = 1.1
     student_learning_ability = 1
 
     builder = EnvironmentBuilder(mooc, 0.1, alpha, beta, student_learning_ability)
@@ -215,7 +219,7 @@ if __name__ == '__main__':
 
     for s in range(len(builder.states)):
         for a in range(len(builder.actions)):
-           # print(np.sum(builder.transition_probabilities[s, a, :]))
+            #print(np.sum(builder.transition_probabilities[s, a, :]))
             for ns in range(len(builder.states)):
                 pass
                 #if builder.transition_probabilities[s, a, ns] != 0:
