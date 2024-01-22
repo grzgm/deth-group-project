@@ -144,7 +144,7 @@ class EnvironmentBuilder:
         # Print the transition probabilities
         # print(self.transition_probabilities)
 
-    def create_rewards(self):
+    def manual_rewards(self):
         # Actual reward logic still needs to be added for now manual
         self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
 
@@ -152,7 +152,7 @@ class EnvironmentBuilder:
             [{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])] = 1
 
     # This version of the create rewards correctly assigns the rewards, but seems to give some problems to the demo when q-learning
-    def create_rewards_v2(self):
+    def create_rewards(self):
         # Initialize the rewards array
         self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
 
@@ -170,6 +170,7 @@ class EnvironmentBuilder:
         self.create_states()
         self.create_actions()
         self.create_transition_probabilities()
+        # self.manual_rewards()
         self.create_rewards()
         return self.states, self.actions, self.transition_probabilities, self.rewards
 
@@ -191,7 +192,7 @@ if __name__ == '__main__':
     builder.create_states()
     builder.create_actions()
     builder.create_transition_probabilities()
-    builder.create_rewards()
+    builder.manual_rewards()
     print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", True))
 
     print("Probability of passing course3 with skill levels [1, 1, 1]:")
