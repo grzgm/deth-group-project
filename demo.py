@@ -1,6 +1,7 @@
 import numpy as np
 from mdp import Mdp
 from environment_builder import EnvironmentBuilder
+import matplotlib.pyplot as plt
 
 
 def dynamic_programming():
@@ -207,3 +208,26 @@ for s in states:
     print(s, end=' ')
     with np.printoptions(precision=3, suppress=True):
         print(action_value_array[states.index(s)])
+
+# Set the figure size
+plt.figure(figsize=(8, 30))
+
+# Create a heatmap
+plt.imshow(action_value_array, cmap='viridis', interpolation='nearest', aspect=0.2)
+
+# Add colorbar
+plt.colorbar()
+
+# Set axis labels
+plt.xlabel('Actions')
+plt.ylabel('States')
+
+# Set custom labels for the x-axis
+plt.xticks(np.arange(len(actions)), actions)
+
+# Set custom labels for the y-axis
+plt.yticks(np.arange(len(states)), states)
+
+# Display the plot
+plt.title('Action-Value Array')
+plt.show()
