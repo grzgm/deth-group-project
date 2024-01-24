@@ -28,7 +28,7 @@ class Solver:
 
     def solve_with_q_learning(self, episodes_enabled, policy_evaluation_enabled,
                               episodes, theta, max_steps_in_episode, start_state_index,
-                              alpha, epsilon, gamma):
+                              alpha, epsilon, gamma, cost_of_living):
         self.last_used_algorithm = "q learning"
         self.last_used_parameters = {
             "episodes_enabled": episodes_enabled,
@@ -39,13 +39,14 @@ class Solver:
             "start_state_index": start_state_index,
             "alpha": alpha,
             "epsilon": epsilon,
-            "gamma": gamma
+            "gamma": gamma,
+            "cost_of_living": cost_of_living
         }
 
         if episodes_enabled:
             for episode in range(episodes):
                 print(f"q_learning episode: {episode}")
-                self.__q_learning(max_steps_in_episode, start_state_index, alpha, epsilon, gamma)
+                self.__q_learning(max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living)
 
         # policy evaluation
         episode = 0
@@ -54,13 +55,13 @@ class Solver:
                 episode += 1
                 print(f"q_learning iteration: {episode}")
 
-                difference = self.__q_learning(max_steps_in_episode, start_state_index, alpha, epsilon, gamma)
+                difference = self.__q_learning(max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living)
                 if difference < theta:
                     break
 
     def solve_with_monte_carlo(self, episodes_enabled, policy_evaluation_enabled,
                                episodes, theta, max_steps_in_episode, start_state_index,
-                               alpha, epsilon, gamma):
+                               alpha, epsilon, gamma, cost_of_living):
         self.last_used_algorithm = "monte carlo"
         self.last_used_parameters = {
             "episodes_enabled": episodes_enabled,
@@ -71,13 +72,14 @@ class Solver:
             "start_state_index": start_state_index,
             "alpha": alpha,
             "epsilon": epsilon,
-            "gamma": gamma
+            "gamma": gamma,
+            "cost_of_living": cost_of_living
         }
 
         if episodes_enabled:
             for episode in range(episodes):
                 print(f"monte_carlo episode: {episode}")
-                self.__monte_carlo(max_steps_in_episode, start_state_index, alpha, epsilon, gamma)
+                self.__monte_carlo(max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living)
 
         # policy evaluation
         episode = 0
@@ -86,7 +88,7 @@ class Solver:
                 episode += 1
                 print(f"monte_carlo iteration: {episode}")
 
-                difference = self.__monte_carlo(max_steps_in_episode, start_state_index, alpha, epsilon, gamma)
+                difference = self.__monte_carlo(max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living)
                 if difference < theta:
                     break
 
@@ -109,7 +111,7 @@ class Solver:
             if difference < theta:
                 break
 
-    def __q_learning(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma):
+    def __q_learning(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living):
         # start episode
         difference = 0
         episode_return = 0
@@ -136,6 +138,10 @@ class Solver:
             # make an action
             new_state, reward, is_terminal = self.mdp.step(previous_state, action)
 
+            # take cost of living into account
+            if cost_of_living != 0:
+                reward += cost_of_living
+
             episode_return += reward
 
             # update Action Value function (Q)
@@ -155,7 +161,7 @@ class Solver:
         self.episode_returns.append(episode_return)
         return difference
 
-    def __monte_carlo(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma):
+    def __monte_carlo(self, max_steps_in_episode, start_state_index, alpha, epsilon, gamma, cost_of_living):
         # start episode
         monte_carlo_history = []
         previous_state = start_state_index
@@ -176,6 +182,10 @@ class Solver:
 
             # make an action
             new_state, reward, is_terminal = self.mdp.step(previous_state, action)
+
+            # take cost of living into account
+            if cost_of_living != 0:
+                reward += cost_of_living
 
             # add the episode states, actions, rewards for  Monte Carlo
             monte_carlo_history.append((previous_state, action, reward))

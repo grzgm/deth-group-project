@@ -189,7 +189,7 @@ if __name__ == '__main__':
 
     # hyperparameters
     alpha = 2.0
-    beta = 1.1
+    beta = 0.1
     student_learning_ability = 1
 
     builder = EnvironmentBuilder(mooc, 0.1, alpha, beta, student_learning_ability)
