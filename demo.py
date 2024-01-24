@@ -31,7 +31,7 @@ solver = Solver(mdp)
 
 # dynamic programming
 solver.solve_with_dynamic_programming(theta=0.000001, gamma=0.9)
-solver.create_plot()
+solver.create_plot_of_action_value_array()
 
 # q-learning
 solver.reset_solver()
@@ -43,7 +43,8 @@ solver.solve_with_q_learning(True, True,
                              alpha=0.04,
                              epsilon=0.00,
                              gamma=0.9)
-solver.create_plot()
+solver.create_plot_of_action_value_array()
+solver.create_plot_of_episode_returns()
 
 solver.reset_solver()
 solver.solve_with_q_learning(True, True,
@@ -54,7 +55,8 @@ solver.solve_with_q_learning(True, True,
                              alpha=0.04,
                              epsilon=0.00,
                              gamma=0.9)
-solver.create_plot()
+solver.create_plot_of_action_value_array()
+solver.create_plot_of_episode_returns()
 
 # monte carlo
 solver.reset_solver()
@@ -66,13 +68,5 @@ solver.solve_with_monte_carlo(True, True,
                               alpha=0.04,
                               epsilon=0.00,
                               gamma=0.9)
-solver.create_plot()
-
-# # Action Value Array at the end
-# for a in actions:
-#     print(f'\t{a}\t', end='')
-# print()
-# for s in states:
-#     print(s, end=' ')
-#     with np.printoptions(precision=3, suppress=True):
-#         print(action_value_array[states.index(s)])
+solver.create_plot_of_action_value_array()
+solver.create_plot_of_episode_returns()

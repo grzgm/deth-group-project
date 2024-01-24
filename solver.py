@@ -10,15 +10,38 @@ class Solver:
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
         self.episode_returns = []
 
+        self.last_used_algorithm = ""
+        self.last_used_parameters = {}
+
     def reset_solver(self):
         self.action_value_array = np.zeros((len(self.mdp.states), len(self.mdp.actions)))
+        self.episode_returns = []
+        self.last_used_algorithm = {}
 
     def solve_with_dynamic_programming(self, theta, gamma):
+        self.last_used_algorithm = "dynamic programming"
+        self.last_used_parameters = {
+            "theta": theta,
+            "gamma": gamma,
+        }
         self.__dynamic_programming(theta, gamma)
 
     def solve_with_q_learning(self, episodes_enabled, policy_evaluation_enabled,
                               episodes, theta, max_steps_in_episode, start_state_index,
                               alpha, epsilon, gamma):
+        self.last_used_algorithm = "q learning"
+        self.last_used_parameters = {
+            "episodes_enabled": episodes_enabled,
+            "policy_evaluation_enabled": policy_evaluation_enabled,
+            "episodes": episodes,
+            "theta": theta,
+            "max_steps_in_episode": max_steps_in_episode,
+            "start_state_index": start_state_index,
+            "alpha": alpha,
+            "epsilon": epsilon,
+            "gamma": gamma
+        }
+
         if episodes_enabled:
             for episode in range(episodes):
                 print(f"q_learning episode: {episode}")
@@ -38,6 +61,19 @@ class Solver:
     def solve_with_monte_carlo(self, episodes_enabled, policy_evaluation_enabled,
                                episodes, theta, max_steps_in_episode, start_state_index,
                                alpha, epsilon, gamma):
+        self.last_used_algorithm = "monte carlo"
+        self.last_used_parameters = {
+            "episodes_enabled": episodes_enabled,
+            "policy_evaluation_enabled": policy_evaluation_enabled,
+            "episodes": episodes,
+            "theta": theta,
+            "max_steps_in_episode": max_steps_in_episode,
+            "start_state_index": start_state_index,
+            "alpha": alpha,
+            "epsilon": epsilon,
+            "gamma": gamma
+        }
+
         if episodes_enabled:
             for episode in range(episodes):
                 print(f"monte_carlo episode: {episode}")
@@ -169,7 +205,7 @@ class Solver:
         self.episode_returns.append(episode_return)
         return difference
 
-    def create_plot(self):
+    def create_plot_of_action_value_array(self):
         # Set the figure size
         plt.figure(figsize=(8, 30))
 
@@ -196,15 +232,26 @@ class Solver:
 
         # Display the plot
         plt.title('Action-Value Array')
+        plt.suptitle(
+            f'Algorithm: {self.last_used_algorithm}')
         plt.show()
+
+    def create_plot_of_episode_returns(self):
+        # Set the figure size
+        plt.figure(figsize=(10, 7))
 
         # Create a plot
         plt.plot(self.episode_returns)
 
         # Add labels to the plot
-        plt.xlabel('Index')
-        plt.ylabel('Value')
-        plt.title('Plot of Array of Numbers')
+        plt.xlabel('Episode Number')
+        plt.ylabel('Return')
+        plt.title('Plot of Episode Returns')
+        plt.suptitle(
+            f'Algorithm: {self.last_used_algorithm}')
+
+        legend_text = "\n".join(map(lambda p: f"{p}: {self.last_used_parameters[p] !s}", self.last_used_parameters))
+        plt.legend([legend_text], loc='upper left', bbox_to_anchor=(0.7, 0.9))
 
         # Display the plot
         plt.show()
