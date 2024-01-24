@@ -1,14 +1,19 @@
-import random
 from math import isclose
 import numpy as np
 
+from environment_builder import EnvironmentBuilder
+
+
 class Mdp:
-    def __init__(self, states, actions, transition_probabilities, rewards):
-        self.states = states
-        self.actions = actions
-        self.transition_probabilities = transition_probabilities
+    def __init__(self, mooc, transition_probability_gamma, alpha_state_update, beta_state_update,
+                 student_learning_ability):
+        # Initialise builder
+        builder = EnvironmentBuilder(mooc, transition_probability_gamma, alpha_state_update, beta_state_update,
+                                     student_learning_ability)
+        # build MDP
+        self.states, self.actions, self.transition_probabilities, self.rewards = builder.get_everything()
+        # Make sure probabilities make sense
         self.inspect_probabilities()
-        self.rewards = rewards
 
     def possible_actions_indexes(self, state):
         return [index[0] for index, probability in np.ndenumerate(self.transition_probabilities[state]) if

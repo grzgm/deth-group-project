@@ -1,5 +1,4 @@
 from mdp import Mdp
-from environment_builder import EnvironmentBuilder
 from solver import Solver
 
 # mooc = {
@@ -21,11 +20,8 @@ beta_state_update = 0.1
 student_learning_ability = 1
 
 # states, actions, transition_probabilities, rewards = builder()
-builder = EnvironmentBuilder(mooc, transition_probability_gamma, alpha_state_update, beta_state_update,
-                             student_learning_ability)
-states, actions, transition_probabilities, rewards = builder.get_everything()
-
-mdp = Mdp(states, actions, transition_probabilities, rewards)
+mdp = Mdp(mooc, transition_probability_gamma, alpha_state_update, beta_state_update,
+          student_learning_ability)
 
 solver = Solver(mdp)
 
