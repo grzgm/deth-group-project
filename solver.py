@@ -121,7 +121,8 @@ class Solver:
             # choose action based on epsilon-greedy policy
             # np.max(action_value_array[previous_state, :]) is there to balance starting states
             # when action_value_array is full of zeros and agent always goes with action with index 0
-            if np.random.rand() < epsilon or np.max(
+            # so agent chooses random action
+            if np.random.rand() < epsilon or not np.max(
                     self.action_value_array[previous_state, :]) or best_action not in possible_actions:
                 # random action
                 action = np.random.choice(self.mdp.possible_actions_indexes(previous_state))
@@ -165,7 +166,7 @@ class Solver:
             # choose action based on epsilon-greedy policy
             # np.max(action_value_array[previous_state, :]) is there to balance starting states
             # when action_value_array is full of zeros and agent always goes with action with index 0
-            if np.random.rand() < epsilon or np.max(
+            if np.random.rand() < epsilon or not np.max(
                     self.action_value_array[previous_state, :]) or best_action not in possible_actions:
                 # random action
                 action = np.random.choice(self.mdp.possible_actions_indexes(previous_state))
