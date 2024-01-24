@@ -155,7 +155,6 @@ class EnvironmentBuilder:
         self.rewards[self.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), self.actions.index("course3"), self.states.index(
             [{'skillA': 1}, {'skillB': 3}, {'skillC': 3}])] = 1
 
-    # This version of the create rewards correctly assigns the rewards, but seems to give some problems to the demo when q-learning
     def create_rewards(self):
         # Initialize the rewards array
         self.rewards = np.zeros((len(self.states), len(self.actions), len(self.states)))
