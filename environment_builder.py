@@ -196,8 +196,8 @@ if __name__ == '__main__':
     builder.create_states()
     builder.create_actions()
     builder.create_transition_probabilities()
-    builder.manual_rewards()
-    print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", True))
+    builder.create_rewards()
+    print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", False))
 
     print("Probability of passing course3 with skill levels [1, 1, 1]:")
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),
@@ -223,4 +223,4 @@ if __name__ == '__main__':
             for ns in range(len(builder.states)):
                 pass
                 #if builder.transition_probabilities[s, a, ns] != 0:
-                   # print(builder.transition_probabilities[s, a, ns])
+                   #print(builder.transition_probabilities[s, a, ns])

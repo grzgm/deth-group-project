@@ -31,6 +31,8 @@ For the development purpose we have used this structure of MOOC:
    - Arithmetic
    - Geometry
 
+
+
 ## MDP Formal Definition
 
 ### States
@@ -57,7 +59,7 @@ Actions are defined by taking specific courses, each course has an associated up
      - $r_{Arithmetic} = 1$
      - $r_{Statistics} = 1$
    - Upskill vector:
-     - $u_{Arithmetic} = 2$
+     - $u_{Arithmetic} = 2$no 
      - $u_{Statistics} = 2$
 2. Algebraic Statistics
    - Requirements vector:
