@@ -148,13 +148,13 @@
   },
   "active": "f739b38f84557a85",
   "lastOpenFiles": [
-    "documentation/report.ipynb.tmp",
-    "README.md",
     "environment_builder.py~",
+    "documentation/Note.md",
+    "documentation/report.ipynb.tmp",
+    "documentation/MDP.md",
+    "README.md",
     "demo.py~",
     "solver.py~",
-    "documentation/Note.md",
-    "documentation/MDP.md",
     "documentation/MDP Example canvas.canvas"
   ]
 }
