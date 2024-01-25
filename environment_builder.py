@@ -14,7 +14,7 @@ class EnvironmentBuilder:
         # extract data to construct the states, actions, transition_probabilities, rewards
         self.mooc = mooc
         self.skills = []
-        self.max_skill_level = 0
+        self.max_skill_level = 4
         self.extarct_skills_and_max_skill_level()
 
         self.states = []
@@ -54,9 +54,10 @@ class EnvironmentBuilder:
             # Check if the skill level has reached the maximum
             if current_skill_level < self.max_skill_level:
                 # if the max has not been reached update the skill level based on passing or failing
-                update_value = self.alpha * upskill_vector[idx] * self.student_learning_ability if passed \
-                    else self.beta * upskill_vector[idx] * self.student_learning_ability
-                new_state[idx][skill_name] += update_value
+                if passed:
+                    new_state[idx][skill_name] = max(current_skill_level, upskill_vector[idx])
+                else:
+                    new_state[idx][skill_name] = max(current_skill_level + ((upskill_vector[idx] - current_skill_level) * self.beta), current_skill_level)
 
                 # Ensure the skill level is an integer
                 new_state[idx][skill_name] = math.floor(new_state[idx][skill_name])
@@ -163,11 +164,14 @@ class EnvironmentBuilder:
         for s_idx, source_state in enumerate(self.states):
             for a_idx, action in enumerate(self.actions):
                 for ns_idx, next_state in enumerate(self.states):
-                    # Check if the next state is a passing state based on the action
-                    passed = self.get_next_state(source_state, action, True) == next_state
-
-                    # Assign reward based on passing or failing, 3 for passing and 1 for failing
-                    self.rewards[s_idx, a_idx, ns_idx] = 3 if passed else 1
+                    # Check if the next state has all skill levels equal to the maximum skill level
+                    if all(next_state[idx][skill_name] == self.max_skill_level for idx, skill_name in
+                           enumerate(self.skills)):
+                        self.rewards[s_idx, a_idx, ns_idx] = 10
+                    else:
+                        # Assign reward based on passing or failing, 3 for passing and 1 for failing
+                        self.rewards[s_idx, a_idx, ns_idx] = 2 if self.get_next_state(source_state, action,
+                                                                                      True) == next_state else 1
 
     def get_everything(self):
         self.create_states()
@@ -196,7 +200,7 @@ if __name__ == '__main__':
     builder.create_actions()
     builder.create_transition_probabilities()
     builder.create_rewards()
-    print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", False))
+    print(builder.get_next_state([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}], "course3", True))
 
     print("Probability of passing course3 with skill levels [1, 1, 1]:")
     print(builder.transition_probabilities[builder.states.index([{'skillA': 1}, {'skillB': 1}, {'skillC': 1}]), builder.actions.index("course3"),

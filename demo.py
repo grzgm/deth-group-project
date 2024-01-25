@@ -33,13 +33,13 @@ solver.create_plot_of_action_value_array()
 solver.reset_solver()
 solver.solve_with_q_learning(True, True,
                              episodes=10,
-                             theta=0.052,
+                             theta=0.0052,
                              max_steps_in_episode=1000,
                              start_state_index=0,
                              alpha=0.04,
                              epsilon=0.00,
                              gamma=0.9,
-                             cost_of_living=0
+                             cost_of_living=-1.5
                              )
 solver.create_plot_of_action_value_array()
 solver.create_plot_of_episode_returns()
