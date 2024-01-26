@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -218,7 +220,7 @@ class Solver:
 
     def create_plot_of_action_value_array(self):
         # Set the figure size
-        plt.figure(figsize=(8, 30))
+        plt.figure(figsize=(8, math.ceil(len(self.mdp.states) * 0.24)))
 
         # Create a heatmap
         plt.imshow(self.action_value_array, cmap='viridis', interpolation='nearest', aspect=0.2)
