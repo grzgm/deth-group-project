@@ -14,7 +14,7 @@ mooc = {
 }
 
 # The IT MOOC Dictionary
-mooc = {
+moocIt = {
     "Python Programming Basics": [
         ["Python Programming Fundamentals", 0, 2]
     ],
