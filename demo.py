@@ -8,9 +8,10 @@ from solver import Solver
 
 # Example MOOC Dictionary
 mooc = {
-    "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
-    "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
-    "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
+        "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
+        "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
+        "course3": [["skillB", 1, 2], ["skillC", 1, 2]],
+        "course4": [["skillA", 1, 2], ["skillC", 1, 2]]
 }
 
 # The IT MOOC Dictionary
@@ -51,7 +52,7 @@ moocIt = {
 # hyperparameters environment builder
 transition_probability_gamma = 0.1
 alpha_state_update = 5
-beta_state_update = 0.1
+beta_state_update = 0.05
 student_learning_ability = 1
 
 # states, actions, transition_probabilities, rewards = builder()
@@ -67,14 +68,14 @@ solver.create_plot_of_action_value_array()
 # q-learning
 solver.reset_solver()
 solver.solve_with_q_learning(True, True,
-                             episodes=10,
-                             theta=0.052,
-                             max_steps_in_episode=1000,
+                             episodes=100,
+                             theta=0.03,
+                             max_steps_in_episode=4,
                              start_state_index=0,
                              alpha=0.04,
-                             epsilon=0.00,
+                             epsilon=0.05,
                              gamma=0.9,
-                             cost_of_living=-1.5
+                             cost_of_living=-0.5
                              )
 solver.create_plot_of_action_value_array()
 solver.create_plot_of_episode_returns()

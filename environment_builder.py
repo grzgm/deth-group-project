@@ -14,7 +14,7 @@ class EnvironmentBuilder:
         # extract data to construct the states, actions, transition_probabilities, rewards
         self.mooc = mooc
         self.skills = []
-        self.max_skill_level = 4
+        self.max_skill_level = 0
         self.extarct_skills_and_max_skill_level()
 
         self.states = []
@@ -86,13 +86,13 @@ class EnvironmentBuilder:
             for i in range(len(skill_levels)):
                 state.append({self.skills[i]: skill_levels[i]})
             self.states.append(state)
-        # print(self.states)
+        #print(self.states)
 
     def create_actions(self):
         # action is taking a course, so there is only need to get names of courses
         for course in self.mooc:
             self.actions.append(course)
-        # print(self.actions)
+        #print(self.actions)
 
     def calculate_transition_probability(self, source_state, action):
         # Retrieve the 'required vector' from the MOOC dictionary for the specific action
@@ -138,13 +138,17 @@ class EnvironmentBuilder:
                 if next_state_index_pass == current_state_index and next_state_index_fail == current_state_index:
                     continue
 
+                # Check if the current state is a terminal state (all skills at max level)
+                is_terminal_current = all(
+                    state[idx][skill_name] == self.max_skill_level for idx, skill_name in enumerate(self.skills))
+
                 # Set the transition probability for the given state, action, and next state (passing)
                 self.transition_probabilities[
-                    current_state_index, current_action_index, next_state_index_pass] = probability_of_passing
+                    current_state_index, current_action_index, next_state_index_pass] = probability_of_passing if not is_terminal_current else 0
 
                 # Set the transition probability for the given state, action, and current state (failing)
                 self.transition_probabilities[
-                    current_state_index, current_action_index, next_state_index_fail] = probability_of_failing
+                    current_state_index, current_action_index, next_state_index_fail] = probability_of_failing if not is_terminal_current else 0
 
         # Print the transition probabilities
         # print(self.transition_probabilities)
@@ -167,10 +171,10 @@ class EnvironmentBuilder:
                     # Check if the next state has all skill levels equal to the maximum skill level
                     if all(next_state[idx][skill_name] == self.max_skill_level for idx, skill_name in
                            enumerate(self.skills)):
-                        self.rewards[s_idx, a_idx, ns_idx] = 10
+                        self.rewards[s_idx, a_idx, ns_idx] = 8
                     else:
                         # Assign reward based on passing or failing, 3 for passing and 1 for failing
-                        self.rewards[s_idx, a_idx, ns_idx] = 2 if self.get_next_state(source_state, action,
+                        self.rewards[s_idx, a_idx, ns_idx] = 3 if self.get_next_state(source_state, action,
                                                                                       True) == next_state else 1
 
     def get_everything(self):
@@ -187,8 +191,9 @@ if __name__ == '__main__':
     mooc = {
             "course1": [["skillA", 0, 1], ["skillB", 0, 1]],
             "course2": [["skillA", 0, 0], ["skillC", 0, 1]],
-            "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
-        }
+            "course3": [["skillB", 1, 2], ["skillC", 1, 2]],
+            "course4": [["skillA", 1, 2], ["skillC", 1, 2]]
+    }
 
     # hyperparameters
     alpha = 2.0
