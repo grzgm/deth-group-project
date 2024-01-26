@@ -78,7 +78,7 @@ class EnvironmentBuilder:
 
     def create_states(self):
         # Generate all permutations of possible skill levels for amount of skills
-        all_permutations = product(range(self.max_skill_level + 3), repeat=len(self.skills))
+        all_permutations = product(range(self.max_skill_level + 1), repeat=len(self.skills))
 
         # each permutaions of skill levels assign as a possible state
         for skill_levels in all_permutations:
