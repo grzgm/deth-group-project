@@ -70,7 +70,7 @@ solver.reset_solver()
 solver.solve_with_q_learning(True, True,
                              episodes=100,
                              theta=0.03,
-                             max_steps_in_episode=4,
+                             max_steps_in_episode=6,
                              start_state_index=0,
                              alpha=0.04,
                              epsilon=0.05,
