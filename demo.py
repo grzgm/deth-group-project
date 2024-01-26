@@ -13,6 +13,41 @@ mooc = {
     "course3": [["skillB", 1, 2], ["skillC", 1, 2]]
 }
 
+# The IT MOOC Dictionary
+mooc = {
+    "Python Programming Basics": [
+        ["Python Programming Fundamentals", 0, 2]
+    ],
+    "Database Management Essentials": [
+        ["Python Programming Fundamentals", 2, 0],
+        ["Database Management", 0, 3]
+    ],
+    "Introduction to Machine Learning with Python": [
+        ["Python Programming Fundamentals", 2, 3],
+        ["Machine Learning", 0, 4]
+    ],
+    "Web Development Using Python": [
+        ["Python Programming Fundamentals", 2, 3],
+        ["Web Development", 0, 3]
+    ],
+    "Advanced Python Programming and Optimization": [
+        ["Python Programming Fundamentals", 3, 5]
+    ],
+    "Database Administration and Performance Tuning": [
+        ["Database Management", 3, 6],
+        ["Python Programming Fundamentals", 3, 0]
+    ],
+    "Deep Learning and Neural Networks with Python": [
+        ["Python Programming Fundamentals", 5, 6],
+        ["Machine Learning", 3, 6]
+    ],
+    "Full-Stack Web Development Mastery": [
+        ["Python Programming Fundamentals", 4, 6],
+        ["Web Development", 4, 6]
+    ]
+}
+
+
 # hyperparameters environment builder
 transition_probability_gamma = 0.1
 alpha_state_update = 5
